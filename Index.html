@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Home Class — Adams College (PWA)</title>
+<meta name="theme-color" content="#050913" />
+<link rel="manifest" href="manifest.json">
+
+<style>
+/* (Keep the same dark futuristic theme you liked) */
+:root{
+  --bg:#050913; --panel:#0a1b30; --ink:#e6f1ff; --muted:#97aac7;
+  --neon:#1f7aff; --neon2:#a855f7;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:
+  radial-gradient(900px 400px at 5% 0%, rgba(31,122,255,.07), transparent 60%),
+  radial-gradient(1100px 500px at 95% 100%, rgba(168,85,247,.08), transparent 60%),
+  linear-gradient(180deg,var(--bg),#081223); color:var(--ink);
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;}
+.wrap{max-width:1100px;margin:0 auto;padding:16px 14px 110px}
+header{position:sticky;top:0;background:linear-gradient(180deg, rgba(5,9,19,.9), rgba(5,9,19,.55));backdrop-filter:blur(6px);
+  z-index:20;border-bottom:1px solid rgba(255,255,255,.04)}
+.head-inner{max-width:1100px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(180deg,#0f2340,#091528)}
+.brand h1{margin:0;font-size:18px}
+.slogan{font-size:12px;color:var(--muted)}
+.btn{border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));padding:8px 12px;border-radius:10px;cursor:pointer}
+.btn.primary{border:none;background:linear-gradient(90deg,var(--neon),var(--neon2));color:#061021}
+.panel{background:linear-gradient(180deg,var(--panel),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.05);border-radius:14px;padding:12px}
+.row{display:flex;gap:12px;align-items:center}
+.spacer{flex:1}
+.small{color:var(--muted);font-size:12px}
+
+/* Views */
+main{margin-top:14px}
+.view{display:none;opacity:0;transform:translateY(8px);transition:opacity .25s, transform .25s}
+.view.active{display:block;opacity:1;transform:translateY(0)}
+/* Floating nav */
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(8px);display:flex;gap:10px;padding:8px;border-radius:40px;z-index:40}
+.tab{width:56px;height:56px;border-radius:14px;border:1px solid rgba(255,255,255,.08);display:grid;place-items:center;cursor:pointer}
+.tab.active{background:linear-gradient(90deg,var(--neon),var(--neon2));color:#061021}
+.card{padding:12px;border-radius:12px;background:linear-gradient(180deg,#0a1c33,#091729);border:1px solid rgba(255,255,255,.05)}
+.papers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+</style>
+</head>
+<body>
+<header>
+  <div class="head-inner">
+    <div class="logo" aria-hidden="true">
+      <!-- glowing icon small -->
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <path d="M3 10.5 12 4l9 6.5" stroke="#7dd3fc" stroke-width="1.5"/>
+        <rect x="5" y="10" width="14" height="9" rx="2" fill="#0f2747" stroke="#93c5fd" stroke-opacity=".35"/>
+        <path d="M8 13c3-1.2 5-1.2 8 0" stroke="#fde68a"/>
+      </svg>
+    </div>
+    <div class="brand">
+      <h1>Home Class</h1>
+      <div class="slogan">Inspiring academic excellence from the comfort of your home</div>
+    </div>
+    <div class="spacer"></div>
+    <button id="installBtn" class="btn">Add Home Class to device</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <main class="panel">
+    <!-- HOME -->
+    <section id="view-home" class="view active">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="flex:1">
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="pill" style="background:linear-gradient(90deg,#7dd3fc,#93c5fd);color:#021526;padding:6px;border-radius:12px;font-weight:800">Powered by Adams College</div>
+            <div class="small">Made by Ngcebo Khanyile • InventiCore Industries</div>
+          </div>
+          <h2 style="margin-top:10px">Welcome to Home Class</h2>
+          <div id="heroQuote" class="small" style="margin-top:8px;font-style:italic"></div>
+        </div>
+        <div style="width:320px">
+          <div class="card">
+            <strong>Quick Actions</strong>
+            <div style="margin-top:8px" class="row">
+              <button id="loadDemo" class="btn">Load Demo</button>
+              <button id="openMsgr" class="btn">Open Messenger</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <h3>Featured Past Papers</h3>
+        <div id="home-papers" class="papers-grid" style="margin-top:10px"></div>
+      </div>
+    </section>
+
+    <!-- PAPERS -->
+    <section id="view-papers" class="view">
+      <h3>All Past Papers</h3>
+      <div id="papers-list" style="margin-top:10px"></div>
+    </section>
+
+    <!-- QUIZZES -->
+    <section id="view-quizzes" class="view">
+      <h3>Quizzes</h3>
+      <div id="quizzes-list" style="margin-top:10px"></div>
+    </section>
+
+    <!-- MESSENGER -->
+    <section id="view-messenger" class="view">
+      <h3>Messenger</h3>
+      <div id="chatArea" style="height:280px;overflow:auto;background:linear-gradient(180deg,#0a223b,#0a1730);padding:10px;border-radius:8px"></div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <input id="chatInput" placeholder="Message..." style="flex:1;padding:10px;border-radius:8px"/>
+        <button id="chatSend" class="btn primary">Send</button>
+      </div>
+    </section>
+
+    <!-- TIMETABLE -->
+    <section id="view-timetable" class="view">
+      <h3>Exam Timetable</h3>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input id="evTitle" placeholder="Exam / Subject" style="flex:1;padding:8px;border-radius:8px"/>
+        <input id="evDate" type="date"/>
+        <input id="evTime" type="time"/>
+        <select id="evGrade"><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select>
+        <button id="evAdd" class="btn">Add</button>
+      </div>
+      <div id="evList" style="margin-top:12px"></div>
+    </section>
+
+  </main>
+</div>
+
+<nav class="nav" aria-label="Main navigation">
+  <div class="tab active" data-view="home" title="Home">🏠</div>
+  <div class="tab" data-view="papers" title="Past Papers">📂</div>
+  <div class="tab" data-view="quizzes" title="Quizzes">📝</div>
+  <div class="tab" data-view="messenger" title="Messenger">💬</div>
+  <div class="tab" data-view="timetable" title="Timetable">📅</div>
+</nav>
+
+<footer style="padding:18px;text-align:center;color:var(--muted)">
+  <div><strong>Powered by Adams College</strong></div>
+  <div class="small">Made by Ngcebo Khanyile • InventiCore Industries</div>
+</footer>
+
+<script>
+/* --- PWA install prompt flow --- */
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBtn').style.display = 'inline-block';
+});
+document.getElementById('installBtn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const choice = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('installBtn').style.display = 'none';
+});
+
+/* --- Service worker registration --- */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js').catch(err => console.warn('sw failed', err));
+}
+
+/* --- Simple app state & demo seeding (keeps offline) --- */
+const KEY='homeclass_pwa_v1';
+let S = JSON.parse(localStorage.getItem(KEY)||'null') || { user:{id:'demo',name:'Demo Student'}, papers:[], quizzes:[], msgs:[], timetable:[] };
+
+function seedDemo(){
+  if(S.papers.length) return;
+  const grades=['Grade 8','Grade 9','Grade 10','Grade 11','Grade 12'];
+  const subjects=['Mathematics','Physical Sciences','Life Sciences','English','Accounting','History','Geography','Life Orientation','Creative Arts','Natural Sciences'];
+  let pid=1,qid=1;
+  grades.forEach(g=>{
+    subjects.forEach(s=>{
+      S.papers.push({id:'p'+(pid++),title:`${g} • ${s} Paper`,grade:g,subject:s,year:2022,url:'https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf',source:'StanmorePhysics'});
+      S.quizzes.push({id:'q'+(qid++),grade:g,subject:s,approved:true,question:`Sample ${s} question for ${g}`,choices:['A','B','C','D'],answer:'A'});
+    });
+  });
+  S.msgs.push({id:'m1',to:'g_all',from:'teacher1',name:'Mrs Dlamini',text:'Welcome to Home Class!',ts:Date.now()});
+  save();
+}
+
+function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
+
+/* --- navigation and rendering --- */
+function show(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  document.querySelectorAll('.nav .tab').forEach(t=> t.classList.toggle('active', t.dataset.view===view));
+}
+document.querySelectorAll('.nav .tab').forEach(t=>t.addEventListener('click', ()=> show(t.dataset.view)));
+show('home'); // default
+
+function renderHome(){
+  document.getElementById('heroQuote').textContent = quotes[Math.floor(Math.random()*quotes.length)];
+  const out = S.papers.slice(0,8).map(p => `<div class="card"><strong>${p.title}</strong><div class="small">${p.grade} • ${p.subject}</div><div style="margin-top:8px"><button class="btn" data-open="${p.id}">Open</button></div></div>`).join('');
+  document.getElementById('home-papers').innerHTML = out;
+}
+
+function renderPapers(){
+  document.getElementById('papers-list').innerHTML = S.papers.map(p=>`<div class="paper-row card"><div><strong>${p.title}</strong><div class="small">${p.grade} • ${p.subject} • ${p.year}</div></div><div><button class="btn" data-open="${p.id}">Open</button> <button class="btn" data-gen="${p.id}">Generate Quiz</button></div></div>`).join('');
+}
+
+function renderQuizzes(){
+  document.getElementById('quizzes-list').innerHTML = S.quizzes.map(q=>`<div class="card"><div style="display:flex;justify-content:space-between"><div><strong>${q.subject} • ${q.grade}</strong><div class="small">${q.question}</div></div><div><button class="btn" data-quiz="${q.id}">Take</button></div></div></div>`).join('');
+}
+
+function renderMessenger(){
+  document.getElementById('chatArea').innerHTML = S.msgs.map(m=>`<div style="margin-bottom:10px"><strong>${m.name}</strong><div class="small">${m.text}</div></div>`).join('');
+}
+function renderTimetable(){
+  document.getElementById('evList').innerHTML = S.timetable.map((ev,i)=>`<div class="card"><div style="display:flex;justify-content:space-between"><div><strong>${ev.title}</strong><div class="small">${ev.grade} • ${ev.date} ${ev.time}</div></div><div><button class="btn" data-del="${i}">Delete</button></div></div></div>`).join('');
+}
+
+/* quick handlers */
+document.getElementById('loadDemo').addEventListener('click', ()=>{ seedDemo(); renderAll(); alert('Demo content loaded.'); });
+document.getElementById('openMsgr').addEventListener('click', ()=> show('messenger'));
+document.getElementById('chatSend').addEventListener('click', ()=>{ const t=document.getElementById('chatInput'); if(!t.value.trim()) return; S.msgs.push({id:'m'+Date.now(),to:'g_all',from:S.user.id,name:S.user.name,text:t.value,ts:Date.now()}); t.value=''; save(); renderMessenger(); });
+document.addEventListener('click',(e)=>{
+  const openId = e.target?.dataset?.open;
+  if(openId){ const p=S.papers.find(x=>x.id===openId); if(p) window.open(p.url,'_blank'); }
+  const genId = e.target?.dataset?.gen;
+  if(genId){ generateQuizFromPaper(genId,6); }
+  const quizId = e.target?.dataset?.quiz;
+  if(quizId){ const q=S.quizzes.find(x=>x.id===quizId); if(q) openQuiz(q); }
+  const del = e.target?.dataset?.del;
+  if(del!=null){ S.timetable.splice(+del,1); save(); renderTimetable(); }
+});
+
+/* timetable add */
+document.getElementById('evAdd').addEventListener('click', ()=>{ const t=document.getElementById('evTitle').value.trim(); const d=document.getElementById('evDate').value; const tm=document.getElementById('evTime').value; const g=document.getElementById('evGrade').value; if(!t||!d||!tm) return alert('Fill title, date and time'); S.timetable.push({title:t,date:d,time:tm,grade:g}); save(); renderTimetable(); });
+
+/* simple quiz modal (same as earlier code) */
+function openQuiz(q){ const ov=document.createElement('div'); ov.style.position='fixed'; ov.style.inset=0; ov.style.background='rgba(0,0,0,.6)'; ov.style.display='flex'; ov.style.alignItems='center'; ov.style.justifyContent='center'; ov.style.zIndex=999; const box=document.createElement('div'); box.className='panel'; box.style.width='min(92%,520px)'; box.innerHTML=`<div style="display:flex;justify-content:space-between"><strong>${q.subject} • ${q.grade}</strong><button id="qClose" class="btn">Close</button></div><div style="margin-top:10px"><div style="font-weight:700">${q.question}</div>${q.choices.map(c=>`<div style="margin-top:8px"><button class="btn" data-choice="${c}">${c}</button></div>`).join('')}</div>`; ov.appendChild(box); document.body.appendChild(ov); box.addEventListener('click', ev => { if(ev.target.id==='qClose') ov.remove(); const c=ev.target?.dataset?.choice; if(c){ alert(c===q.answer? 'Correct!':'Incorrect — correct: '+q.answer); ov.remove(); }}); }
+
+/* quick utilities */
+const quotes = ["Small daily improvements lead to big results.","Discipline beats motivation when motivation fades.","Study the patterns; master the test.","Show up, do the reps, trust the process."];
+function renderAll(){ renderHome(); renderPapers(); renderQuizzes(); renderMessenger(); renderTimetable(); }
+renderAll();
+
+/* --------- QUIZ GENERATOR (from earlier snippet) ---------- */
+/* Minimal generator used for offline fallback. We'll include a slim version here. */
+function createDraftsFromPaper(paper, n=6){
+  const titleWords = (paper.title||paper.subject||'topic').split(/\s+/).filter(w=>w.length>3);
+  const base = [...new Set([paper.subject, ...(titleWords.slice(0,8))])].filter(Boolean);
+  const drafts = [];
+  for(let i=0;i<n;i++){
+    const k = base[i%base.length] || 'topic';
+    drafts.push({id:'g_'+Date.now()+'_'+i,subject:paper.subject,grade:paper.grade,question:`Which of the following best describes "${k}"?`,choices:['It is A','It is B','It is C','It is D'],answer:'It is A',autogenerated:true,approved:false,sourcePaperId:paper.id});
+  }
+  S.quizzes = S.quizzes.concat(drafts);
+  save();
+  alert(`Generated ${drafts.length} draft questions for "${paper.title}". Approve them in Admin.`);
+}
+async function generateQuizFromPaper(paperId, num=6){
+  const p = S.papers.find(x=>x.id===paperId);
+  if(!p) return alert('Paper not found');
+  // Tentative attempt to fetch PDF text (CORS often blocks) — fallback to createDraftsFromPaper
+  try {
+    const res = await fetch(p.url);
+    if(res.ok){
+      // try to read text
+      const txt = await res.text().catch(()=>null);
+      if(txt && txt.length>200){
+        // crude keyword extraction
+        const words = txt.toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(w=>w.length>4);
+        const keys = [...new Set(words)].slice(0,10);
+        // create questions using keys
+        const drafts = keys.slice(0,num).map((k,i)=>({id:'g_'+Date.now()+'_'+i,subject:p.subject,grade:p.grade,question:`In context of ${p.subject}, what is "${k}"?`,choices:['A','B','C','D'],answer:'A',autogenerated:true,approved:false,sourcePaperId:p.id}));
+        S.quizzes = S.quizzes.concat(drafts); save(); alert(`Generated ${drafts.length} draft questions (from fetched text).`); return;
+      }
+    }
+    // If fetch or reading failed, fallback:
+    createDraftsFromPaper(p, num);
+  } catch(err){ createDraftsFromPaper(p, num); }
+}
+
+/* Expose for debugging if needed */ window._HC = {S, save, generateQuizFromPaper};
+</script>
+</body>
+</html>
